@@ -27,9 +27,6 @@ struct param
 {
      double    tol   = std::numeric_limits<double>::epsilon();
      int       maxit = 1000;
-     double    reftol = 1e-3;
-     int       refmax = 100;
-     bool      ref = 1;
      double    abstol = 0.9;
      double    funtol = 0.1;
 
