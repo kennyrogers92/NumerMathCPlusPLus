@@ -115,10 +115,10 @@ struct Result
 
     void print_table() const {
         if (ref) {
-            std::cout << std::string(129, '-') << std::endl;
+            std::cout << std::string(131, '-') << std::endl;
             std::cout << "REAL PART\t\tIMAG PART\t\t|FUN VAL|\t\t"
-                << "ERROR\t\t\tITER\tERROR_REF\tREF" << std::endl;
-            std::cout << std::string(129, '-') << std::endl;
+                << "ERROR\t\t\tITER\tERROR_REF\t\tREF" << std::endl;
+            std::cout << std::string(131, '-') << std::endl;
             size_t n = z_arr.size();
             for (size_t k = 0; k < n; k++) {
                 std::cout << std::showpos << std::scientific
@@ -128,7 +128,7 @@ struct Result
                 << numit_arr[k] << "\t" << error_ref_arr[k] << "\t" <<
                 refnum_arr[k] << std::endl;
             } 
-            std::cout << std::string(129, '-') << std::endl;
+            std::cout << std::string(131, '-') << std::endl;
             return;
         }
         std::cout << std::string(100, '-') << std::endl;
@@ -308,7 +308,7 @@ Result mullerHorner(const std::vector<complex_d_t>& p, const double& x0,
         double err = parameter.tol + 1;
         complex_d_t z0 = x0, z1 = x1, z2 = x2;
         // Linear Polynomial
-        if (m == n- 1) {
+        if (m == n - 1) {
             k++;
             z = -p_temp[0]/p_temp[1];
         }
@@ -324,9 +324,9 @@ Result mullerHorner(const std::vector<complex_d_t>& p, const double& x0,
                 complex_d_t f012 = (f12 - f01)/(z2 - z0);
                 complex_d_t w = f12 + (z2 - z1)*f012;
                 complex_d_t alpha = w*w - 4.*f2*f012;
-                complex_d_t d = max(std::norm(w - sqrt(alpha)),
-                    std::norm(w + sqrt(alpha)));
-                if (std::norm(d) > eps) {
+                double d = max(std::norm(w - std::sqrt(alpha)),
+                    std::norm(w + std::sqrt(alpha)));
+                if (d > eps) {
                     z = z2 - 2.*f2/d;
                     err = max(std::norm(z - z2), std::norm(f2));
                 }

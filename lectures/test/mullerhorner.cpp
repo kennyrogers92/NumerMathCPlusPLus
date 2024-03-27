@@ -22,12 +22,14 @@ int main() {
      // Muller-Horner without refinement
      parameter.ref = 0;
      roots_poly::Result
-          deg5_result = roots_poly::newtonHorner(pn(5), 0.5, parameter);
+          deg5_result = roots_poly::mullerHorner(pn(5), -0.5, 0., 0.5,
+               parameter);
      deg5_result.print_table();
 
      // Muller-Horner with refinement
      parameter.ref = 1;
-     deg5_result = roots_poly::newtonHorner(pn(5), 0.5, parameter);
+     deg5_result = roots_poly::mullerHorner(pn(5), -0.5, 0., 0.5,
+               parameter);
      deg5_result.print_table();
      return 0;
 }
