@@ -276,8 +276,7 @@ namespace linalg {
                x.push_back((b[i] - s) / L[i][i]);
           }
           stopwatch.stop();
-          vector_t Lx = L*x;
-          double residual_max = Max_norm(Lx - b);
+          double residual_max = Max_norm(L*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                "FORWARDSUBROW");
      }
@@ -297,8 +296,7 @@ namespace linalg {
                }
           b_old[n - 1] = b_old[n - 1] / L[n - 1][n - 1];
           stopwatch.stop();
-          vector_t Lb = L*b_old;
-          double residual_max = Max_norm(Lb - b);
+          double residual_max = Max_norm(L*b_old - b);
           return Result(b_old, residual_max, stopwatch.get_elapsed_time(),
                "FORWARDSUBCOL");
      }
@@ -319,8 +317,7 @@ namespace linalg {
                x[i] = (b[i] - s) / U[i][i];
           }
           stopwatch.stop();
-          vector_t Ux = U*x;
-          double residual_max = Max_norm(Ux - b);
+          double residual_max = Max_norm(U*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                "BACKWARDSUBROW");
      }
@@ -340,8 +337,7 @@ namespace linalg {
           }
           b_old[0] = b_old[0] / U[0][0];
           stopwatch.stop();
-          vector_t Ub = U*b_old;
-          double residual_max = Max_norm(Ub - b);
+          double residual_max = Max_norm(U*b_old - b);
           return Result(b_old, residual_max, stopwatch.get_elapsed_time(),
                "BACKWARDSUBCOL");
      }
@@ -553,8 +549,7 @@ namespace linalg {
           vector_t y = forwardsubcol(L, b).x;
           vector_t x = backwardsubcol(U, y).x;
           stopwatch.stop();
-          vector_t Ax = A*x;
-          double residual_max = Max_norm(Ax - b);
+          double residual_max = Max_norm(A*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                method_name); 
      }
@@ -586,8 +581,7 @@ namespace linalg {
           vector_t x = backwardsubcol(U, y).x;
           // Permute x if pivoting is complete
           stopwatch.stop();
-          vector_t Ax = A*x;
-          double residual_max = Max_norm(Ax - b);
+          double residual_max = Max_norm(A*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                method_name); 
      }
@@ -611,8 +605,7 @@ namespace linalg {
                err = Euclid_norm(z)/Euclid_norm(x);
           }
           stopwatch.stop();
-          vector_t Ax = A*x;
-          double residual_max = Max_norm(Ax - b);
+          double residual_max = Max_norm(A*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                "IterativeRef");
      }
@@ -676,24 +669,19 @@ namespace linalg {
           int method=1) {
           timer stopwatch;
           stopwatch.start();
-          matrix_t A_old = A;
           matrix_t Q, R;
           std::string method_name;
           if (method == 0) {
-               std::pair<matrix_t, matrix_t> QR = ModifiedGramSchmidt(A);
-               Q = QR.first, R = QR.second;
+               std::tie(Q, R) = ModifiedGramSchmidt(A);
                method_name = "QRSolve - GSO";
           }
           else {
-               std::pair<matrix_t, matrix_t> QR = ModifiedGramSchmidt2(A);
-               Q = QR.first, R = QR.second;
+               std::tie(Q, R)  = ModifiedGramSchmidt2(A);
                method_name = "QRSolve - GSO2";
           }
-          matrix_t Q_T = transpose(Q);
-          vector_t x = backwardsubcol(R, Q_T*b).x;
+          vector_t x = backwardsubcol(R, transpose(Q)*b).x;
           stopwatch.stop();
-          vector_t Ax = A_old*x;
-          double residual_max = Max_norm(Ax - b);
+          double residual_max = Max_norm(A*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                method_name);
      }
@@ -729,8 +717,7 @@ namespace linalg {
           vector_t y = forwardsubcol(L, b).x;
           vector_t x = backwardsubcol(L_T, y).x;
           stopwatch.stop();
-          vector_t Ax = A*x;
-          double residual_max = Max_norm(Ax - b);
+          double residual_max = Max_norm(A*x - b);
           return Result(x, residual_max, stopwatch.get_elapsed_time(),
                "CholSolve");
      }
