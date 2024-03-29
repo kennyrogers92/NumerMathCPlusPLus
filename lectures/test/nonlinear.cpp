@@ -34,6 +34,7 @@ int main() {
     matrix_t Q = Df(x);
     nonlinear::broyden(f, Q, x, parameters).print();
     x = vector_t {-1.5, -3.};
+    Q = Df(x);
     nonlinear::broyden(f, Q, x, parameters).print();
 
     return 0;
