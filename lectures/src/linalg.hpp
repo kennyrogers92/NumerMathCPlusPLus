@@ -1194,7 +1194,7 @@ namespace linalg {
                err = Max_norm(delta);
                k++;
           }
-          if ((err > parameter.tol) && (k < parameter.maxit)) {
+          if ((err > parameter.tol) && (k == parameter.maxit)) {
                term_flag = "Fail";
           }
           stopwatch.stop();
@@ -1225,7 +1225,7 @@ namespace linalg {
                }
                k++;
           }
-          if ((err > parameter.tol) && (k < parameter.maxit)) {
+          if ((err > parameter.tol) && (k == parameter.maxit)) {
                term_flag = "Fail";
           }
           stopwatch.stop();
